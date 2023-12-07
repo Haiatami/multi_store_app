@@ -21,7 +21,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AuthHeaderLabel(),
+                  const AuthHeaderLabel(
+                    headerLabel: 'Sign Up',
+                  ),
                   Row(
                     children: [
                       const Padding(
@@ -82,26 +84,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: textFormDecoration.copyWith(
                         labelText: 'Full Name',
                         hintText: 'Enter Full Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.purple,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.deepPurpleAccent,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
                       ),
                     ),
                   ),
@@ -210,8 +195,10 @@ class _CustomerRegisterState extends State<CustomerRegister> {
 }
 
 class AuthHeaderLabel extends StatelessWidget {
+  final String headerLabel;
   const AuthHeaderLabel({
     Key? key,
+    required this.headerLabel,
   }) : super(key: key);
 
   @override
@@ -221,9 +208,9 @@ class AuthHeaderLabel extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Sign Up',
-            style: TextStyle(
+          Text(
+            headerLabel,
+            style: const TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
             ),
@@ -242,3 +229,25 @@ class AuthHeaderLabel extends StatelessWidget {
     );
   }
 }
+
+var textFormDecoration = InputDecoration(
+  labelText: 'Full Name',
+  hintText: 'Enter Full Name',
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(25),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: const BorderSide(
+      color: Colors.purple,
+      width: 1,
+    ),
+    borderRadius: BorderRadius.circular(25),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: const BorderSide(
+      color: Colors.deepPurpleAccent,
+      width: 2,
+    ),
+    borderRadius: BorderRadius.circular(25),
+  ),
+);
