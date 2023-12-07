@@ -108,29 +108,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Already have account ?',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            color: Colors.purple,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  HaveAccount(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30),
                     child: Material(
@@ -156,6 +134,39 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class HaveAccount extends StatelessWidget {
+  const HaveAccount({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        const Text(
+          'Already have account ?',
+          style: TextStyle(
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'Log In',
+            style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
