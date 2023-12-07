@@ -7,7 +7,6 @@ class BeautyCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Stack(
@@ -16,8 +15,8 @@ class BeautyCategory extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: SizedBox(
-              height: size.height * 0.8,
-              width: size.width * 0.75,
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.75,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -25,16 +24,16 @@ class BeautyCategory extends StatelessWidget {
                     headerLabel: 'Beauty',
                   ),
                   SizedBox(
-                    height: size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.68,
                     child: GridView.count(
                       mainAxisSpacing: 70,
                       crossAxisCount: 2,
-                      children: List.generate(beauty.length, (index) {
+                      children: List.generate(beauty.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'beauty',
-                          subCategName: beauty[index],
+                          subCategName: beauty[index + 1],
                           assetName: 'images/beauty/beauty$index.jpg',
-                          assetLabel: beauty[index],
+                          subcategLabel: beauty[index + 1],
                         );
                       }),
                     ),
@@ -43,13 +42,13 @@ class BeautyCategory extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: SliderBar(
-                size: size,
-                sliderLabel: 'beauty',
-              ))
+          const Positioned(
+            bottom: 0,
+            right: 0,
+            child: SliderBar(
+              maincategName: 'beauty',
+            ),
+          ),
         ],
       ),
     );

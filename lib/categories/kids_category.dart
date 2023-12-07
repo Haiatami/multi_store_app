@@ -7,7 +7,6 @@ class KidsCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Stack(
@@ -16,8 +15,8 @@ class KidsCategory extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: SizedBox(
-              height: size.height * 0.8,
-              width: size.width * 0.75,
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.75,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -25,16 +24,17 @@ class KidsCategory extends StatelessWidget {
                     headerLabel: 'Kids',
                   ),
                   SizedBox(
-                    height: size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.68,
                     child: GridView.count(
                       mainAxisSpacing: 70,
+                      crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(kids.length, (index) {
+                      children: List.generate(kids.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'kids',
-                          subCategName: kids[index],
+                          subCategName: kids[index + 1],
                           assetName: 'images/kids/kids$index.jpg',
-                          assetLabel: kids[index],
+                          subcategLabel: kids[index + 1],
                         );
                       }),
                     ),
@@ -43,13 +43,13 @@ class KidsCategory extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: SliderBar(
-                size: size,
-                sliderLabel: 'kids',
-              ))
+          const Positioned(
+            bottom: 0,
+            right: 0,
+            child: SliderBar(
+              maincategName: 'kids',
+            ),
+          ),
         ],
       ),
     );

@@ -7,7 +7,6 @@ class ElectronicsCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Stack(
@@ -16,8 +15,8 @@ class ElectronicsCategory extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: SizedBox(
-              height: size.height * 0.8,
-              width: size.width * 0.75,
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.75,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -25,16 +24,17 @@ class ElectronicsCategory extends StatelessWidget {
                     headerLabel: 'Electronics',
                   ),
                   SizedBox(
-                    height: size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.68,
                     child: GridView.count(
                       mainAxisSpacing: 70,
+                      crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(electronics.length, (index) {
+                      children: List.generate(electronics.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'electronics',
-                          subCategName: electronics[index],
+                          subCategName: electronics[index + 1],
                           assetName: 'images/electronics/electronics$index.jpg',
-                          assetLabel: electronics[index],
+                          subcategLabel: electronics[index + 1],
                         );
                       }),
                     ),
@@ -43,13 +43,13 @@ class ElectronicsCategory extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: SliderBar(
-                size: size,
-                sliderLabel: 'electronics',
-              ))
+          const Positioned(
+            bottom: 0,
+            right: 0,
+            child: SliderBar(
+              maincategName: 'electronics',
+            ),
+          ),
         ],
       ),
     );

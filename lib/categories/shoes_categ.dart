@@ -7,7 +7,6 @@ class ShoesCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Stack(
@@ -16,8 +15,8 @@ class ShoesCategory extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: SizedBox(
-              height: size.height * 0.8,
-              width: size.width * 0.75,
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.75,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -25,16 +24,17 @@ class ShoesCategory extends StatelessWidget {
                     headerLabel: 'Shoes',
                   ),
                   SizedBox(
-                    height: size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.68,
                     child: GridView.count(
                       mainAxisSpacing: 70,
+                      crossAxisSpacing: 15,
                       crossAxisCount: 3,
-                      children: List.generate(shoes.length, (index) {
+                      children: List.generate(shoes.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'shoes',
-                          subCategName: shoes[index],
+                          subCategName: shoes[index + 1],
                           assetName: 'images/shoes/shoes$index.jpg',
-                          assetLabel: shoes[index],
+                          subcategLabel: shoes[index + 1],
                         );
                       }),
                     ),
@@ -43,13 +43,13 @@ class ShoesCategory extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: SliderBar(
-                size: size,
-                sliderLabel: 'shoes',
-              ))
+          const Positioned(
+            bottom: 0,
+            right: 0,
+            child: SliderBar(
+              maincategName: 'shoes',
+            ),
+          ),
         ],
       ),
     );

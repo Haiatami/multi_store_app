@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:multi_store_app/minor_screens/subcateg_products.dart';
 
 class SliderBar extends StatelessWidget {
-  final String sliderLabel;
-  const SliderBar({
-    Key? key,
-    required this.sliderLabel,
-    required this.size,
-  }) : super(key: key);
-
-  final Size size;
+  final String maincategName;
+  const SliderBar({Key? key, required this.maincategName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size.height * 0.8,
-      width: size.width * 0.05,
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: MediaQuery.of(context).size.width * 0.05,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40),
         child: Container(
@@ -27,22 +21,13 @@ class SliderBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                sliderLabel == 'beauty'
+                maincategName == 'beauty'
                     ? const Text('')
-                    : const Text(
-                        ' << ',
-                        style: style,
-                      ),
-                Text(
-                  sliderLabel.toUpperCase(),
-                  style: style,
-                ),
-                sliderLabel == 'men'
+                    : const Text(' << ', style: style),
+                Text(maincategName.toUpperCase(), style: style),
+                maincategName == 'men'
                     ? const Text('')
-                    : const Text(
-                        ' >> ',
-                        style: style,
-                      )
+                    : const Text(' >> ', style: style),
               ],
             ),
           ),
@@ -53,23 +38,22 @@ class SliderBar extends StatelessWidget {
 }
 
 const style = TextStyle(
-  fontSize: 16,
-  fontWeight: FontWeight.w600,
-  color: Colors.brown,
-  letterSpacing: 10,
-);
+    color: Colors.brown,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 10);
 
 class SubcategModel extends StatelessWidget {
   final String mainCategName;
   final String subCategName;
   final String assetName;
-  final String assetLabel;
+  final String subcategLabel;
   const SubcategModel(
       {Key? key,
-      required this.assetLabel,
       required this.assetName,
       required this.mainCategName,
-      required this.subCategName})
+      required this.subCategName,
+      required this.subcategLabel})
       : super(key: key);
 
   @override
@@ -79,23 +63,23 @@ class SubcategModel extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SubcategProducts(
-                      mainCategName: mainCategName,
-                      subCategName: subCategName,
+                builder: (context) => SubCategProducts(
+                      maincategName: mainCategName,
+                      subcategName: subCategName,
                     )));
       },
       child: Column(
         children: [
           SizedBox(
-            height: 65,
-            width: 65,
+            height: 70,
+            width: 70,
             child: Image(
               image: AssetImage(assetName),
             ),
           ),
           Text(
-            assetLabel,
-            style: const TextStyle(fontSize: 12),
+            subcategLabel,
+            style: const TextStyle(fontSize: 11),
           )
         ],
       ),
@@ -115,7 +99,7 @@ class CategHeaderLabel extends StatelessWidget {
       child: Text(
         headerLabel,
         style: const TextStyle(
-            fontSize: 24, letterSpacing: 1.5, color: Colors.black),
+            fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 1.5),
       ),
     );
   }

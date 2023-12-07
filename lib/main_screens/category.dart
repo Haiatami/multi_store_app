@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:multi_store_app/categories/accessories_categ.dart';
 import 'package:multi_store_app/categories/bags_categ.dart';
 import 'package:multi_store_app/categories/beauty_categ.dart';
-import 'package:multi_store_app/categories/electro_categ.dart';
+import 'package:multi_store_app/categories/electronic_categ.dart';
 import 'package:multi_store_app/categories/home_garden_categ.dart';
-import 'package:multi_store_app/categories/kids_categ.dart';
+import 'package:multi_store_app/categories/kids_category.dart';
 import 'package:multi_store_app/categories/men_categ.dart';
 import 'package:multi_store_app/categories/shoes_categ.dart';
 import 'package:multi_store_app/categories/women_categ.dart';
@@ -34,10 +34,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   void initState() {
+    for (var element in items) {
+      element.isSelected = false;
+    }
     setState(() {
-      for (var element in items) {
-        element.isSelected = false;
-      }
       items[0].isSelected = true;
     });
     super.initState();
@@ -71,8 +71,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
             return GestureDetector(
               onTap: () {
                 _pageController.animateToPage(index,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.bounceIn);
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.bounceInOut);
               },
               child: Container(
                 color: items[index].isSelected == true
@@ -96,10 +96,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: PageView(
         controller: _pageController,
         onPageChanged: (value) {
+          for (var element in items) {
+            element.isSelected = false;
+          }
           setState(() {
-            for (var element in items) {
-              element.isSelected = false;
-            }
             items[value].isSelected = true;
           });
         },
