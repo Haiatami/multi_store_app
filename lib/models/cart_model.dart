@@ -100,6 +100,7 @@ class CartModel extends StatelessWidget {
                                                                 product
                                                                     .documentId,
                                                                 product.suppId);
+                                                                
                                                     context
                                                         .read<Cart>()
                                                         .removeItem(product);
