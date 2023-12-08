@@ -239,7 +239,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fontWeight: FontWeight.w600,
                               color: Colors.blueGrey.shade800),
                         ),
-                        reviews(reviewsStream),
+                        ExpandableTheme(
+                          data: ExpandableThemeData(),
+                          child: reviews(reviewsStream),
+                        ),
                         const ProDetailsHeader(
                           label: '  Similar Items  ',
                         ),
@@ -435,7 +438,10 @@ Widget reviews(var reviewsStream) {
           ),
         ),
       ),
-      collapsed: const Text('Collapsed'),
+      collapsed: SizedBox(
+        height: 230,
+        child: reviewsAll(reviewsStream),
+      ),
       expanded: reviewsAll(reviewsStream));
 }
 
@@ -464,14 +470,36 @@ Widget reviewsAll(var reviewsStream) {
       }
 
       return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
           itemCount: snapshot2.data!.docs.length,
           itemBuilder: (context, index) {
             return ListTile(
               leading: CircleAvatar(
                   backgroundImage: NetworkImage(
                       snapshot2.data!.docs[index]['profileimage'])),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    snapshot2.data!.docs[index]['name'],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        snapshot2.data!.docs[index]['rate'].toString(),
+                      ),
+                      const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                snapshot2.data!.docs[index]['comment'],
+              ),
             );
           });
     },
