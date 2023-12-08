@@ -28,9 +28,15 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   late final Stream<QuerySnapshot> _prodcutsStream = FirebaseFirestore.instance
-      .collection('proList')
+      .collection('products')
       .where('maincateg', isEqualTo: widget.proList['maincateg'])
       .where('subcateg', isEqualTo: widget.proList['subcateg'])
+      .snapshots();
+
+  late final Stream<QuerySnapshot> reviewsStream = FirebaseFirestore.instance
+      .collection('products')
+      .doc(widget.proList['proid'])
+      .collection('reviews')
       .snapshots();
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
@@ -233,6 +239,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fontWeight: FontWeight.w600,
                               color: Colors.blueGrey.shade800),
                         ),
+                        reviews(reviewsStream),
                         const ProDetailsHeader(
                           label: '  Similar Items  ',
                         ),
@@ -415,7 +422,58 @@ class ProDetailsHeader extends StatelessWidget {
   }
 }
 
-Widget reviews() {
+Widget reviews(var reviewsStream) {
   return ExpandablePanel(
-      collapsed: const Text('Collapsed'), expanded: const Text('expanded'));
+      header: const Padding(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'Reviews',
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      collapsed: const Text('Collapsed'),
+      expanded: reviewsAll(reviewsStream));
+}
+
+Widget reviewsAll(var reviewsStream) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: reviewsStream,
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot2) {
+      if (snapshot2.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      if (snapshot2.data!.docs.isEmpty) {
+        return const Center(
+            child: Text(
+          'This Item \n\n has no Reviews yet !',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 26,
+              color: Colors.blueGrey,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Acme',
+              letterSpacing: 1.5),
+        ));
+      }
+
+      return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+          itemCount: snapshot2.data!.docs.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      snapshot2.data!.docs[index]['profileimage'])),
+            );
+          });
+    },
+  );
 }
