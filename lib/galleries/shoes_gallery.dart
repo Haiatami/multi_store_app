@@ -8,7 +8,7 @@ class ShoesGalleryScreen extends StatefulWidget {
   const ShoesGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _ShoesGalleryScreenState createState() => _ShoesGalleryScreenState();
+  State<ShoesGalleryScreen> createState() => _ShoesGalleryScreenState();
 }
 
 class _ShoesGalleryScreenState extends State<ShoesGalleryScreen> {

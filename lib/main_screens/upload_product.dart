@@ -16,7 +16,7 @@ class UploadProductScreen extends StatefulWidget {
   const UploadProductScreen({Key? key}) : super(key: key);
 
   @override
-  _UploadProductScreenState createState() => _UploadProductScreenState();
+  State<UploadProductScreen> createState() => _UploadProductScreenState();
 }
 
 class _UploadProductScreenState extends State<UploadProductScreen> {

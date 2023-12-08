@@ -12,7 +12,7 @@ class SupplierHomeScreen extends StatefulWidget {
   const SupplierHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _SupplierHomeScreenState createState() => _SupplierHomeScreenState();
+  State<SupplierHomeScreen> createState() => _SupplierHomeScreenState();
 }
 
 class _SupplierHomeScreenState extends State<SupplierHomeScreen> {

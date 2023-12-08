@@ -7,7 +7,7 @@ class SupplierLogin extends StatefulWidget {
   const SupplierLogin({Key? key}) : super(key: key);
 
   @override
-  _SupplierLoginState createState() => _SupplierLoginState();
+  State<SupplierLogin> createState() => _SupplierLoginState();
 }
 
 class _SupplierLoginState extends State<SupplierLogin> {
@@ -29,8 +29,10 @@ class _SupplierLoginState extends State<SupplierLogin> {
             .signInWithEmailAndPassword(email: email, password: password);
 
         _formKey.currentState!.reset();
-
-        Navigator.pushReplacementNamed(context, '/supplier_home');
+        await Future.delayed(const Duration(microseconds: 100))
+            .whenComplete(() =>
+          Navigator.pushReplacementNamed(context, '/supplier_home')
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {

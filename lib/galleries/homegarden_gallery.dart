@@ -8,7 +8,7 @@ class HomeGardenGalleryScreen extends StatefulWidget {
   const HomeGardenGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeGardenGalleryScreenState createState() =>
+  State<HomeGardenGalleryScreen> createState() =>
       _HomeGardenGalleryScreenState();
 }
 

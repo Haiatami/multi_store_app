@@ -22,7 +22,7 @@ class ProductDetailsScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {

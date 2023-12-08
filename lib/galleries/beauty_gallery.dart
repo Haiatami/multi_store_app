@@ -8,7 +8,7 @@ class BeautyGalleryScreen extends StatefulWidget {
   const BeautyGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _BeautyGalleryScreenState createState() => _BeautyGalleryScreenState();
+  State<BeautyGalleryScreen> createState() => _BeautyGalleryScreenState();
 }
 
 class _BeautyGalleryScreenState extends State<BeautyGalleryScreen> {

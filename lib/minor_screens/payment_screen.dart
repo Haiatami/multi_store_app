@@ -15,7 +15,7 @@ class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
 
   @override
-  _PaymentScreenState createState() => _PaymentScreenState();
+  State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
@@ -318,10 +318,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                     context
                                                         .read<Cart>()
                                                         .clearCart();
-                                                    Navigator.popUntil(
-                                                        context,
-                                                        ModalRoute.withName(
-                                                            '/customer_home'));
+                                                    await Future.delayed(
+                                                            const Duration(
+                                                                microseconds:
+                                                                    100))
+                                                        .whenComplete(() =>
+                                                            Navigator.popUntil(
+                                                                context,
+                                                                ModalRoute.withName(
+                                                                    '/customer_home')));
                                                   },
                                                   width: 0.9)
                                             ]),

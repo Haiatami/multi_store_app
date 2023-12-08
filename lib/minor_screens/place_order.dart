@@ -11,7 +11,7 @@ class PlaceOrderScreen extends StatefulWidget {
   const PlaceOrderScreen({Key? key}) : super(key: key);
 
   @override
-  _PlaceOrderScreenState createState() => _PlaceOrderScreenState();
+  State<PlaceOrderScreen> createState() => _PlaceOrderScreenState();
 }
 
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {

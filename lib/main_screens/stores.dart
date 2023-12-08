@@ -7,7 +7,7 @@ class StoresScreen extends StatefulWidget {
   const StoresScreen({Key? key}) : super(key: key);
 
   @override
-  _StoresScreenState createState() => _StoresScreenState();
+  State<StoresScreen> createState() => _StoresScreenState();
 }
 
 class _StoresScreenState extends State<StoresScreen> {

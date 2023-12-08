@@ -22,7 +22,7 @@ class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
@@ -240,9 +240,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                     'cid': _uid
                                   });
                                 });
-
-                                Navigator.pushReplacementNamed(
-                                    context, '/customer_home');
+                                await Future.delayed(
+                                        const Duration(microseconds: 100))
+                                    .whenComplete(() {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/customer_home');
+                                });
                               },
                               child: const Icon(
                                 Icons.person,

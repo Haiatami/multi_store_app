@@ -8,7 +8,7 @@ class BagsGalleryScreen extends StatefulWidget {
   const BagsGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _BagsGalleryScreenState createState() => _BagsGalleryScreenState();
+  State<BagsGalleryScreen> createState() => _BagsGalleryScreenState();
 }
 
 class _BagsGalleryScreenState extends State<BagsGalleryScreen> {

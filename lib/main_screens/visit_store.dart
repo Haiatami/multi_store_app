@@ -12,7 +12,7 @@ class VisitStore extends StatefulWidget {
   const VisitStore({Key? key, required this.suppId}) : super(key: key);
 
   @override
-  _VisitStoreState createState() => _VisitStoreState();
+  State<VisitStore> createState() => _VisitStoreState();
 }
 
 class _VisitStoreState extends State<VisitStore> {

@@ -12,7 +12,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, required this.documentId}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -297,11 +297,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 tabYes: () async {
                                                   await FirebaseAuth.instance
                                                       .signOut();
-                                                  Navigator.pop(context);
-                                                  Navigator
-                                                      .pushReplacementNamed(
-                                                          context,
-                                                          '/welcome_screen');
+                                                  await Future.delayed(
+                                                          const Duration(
+                                                              microseconds:
+                                                                  100))
+                                                      .whenComplete(() {
+                                                    Navigator.pop(context);
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                            context,
+                                                            '/welcome_screen');
+                                                  });
                                                 });
                                           },
                                         ),

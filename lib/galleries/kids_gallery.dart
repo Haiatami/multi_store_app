@@ -8,7 +8,7 @@ class KidsGalleryScreen extends StatefulWidget {
   const KidsGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _KidsGalleryScreenState createState() => _KidsGalleryScreenState();
+  State<KidsGalleryScreen> createState() => _KidsGalleryScreenState();
 }
 
 class _KidsGalleryScreenState extends State<KidsGalleryScreen> {

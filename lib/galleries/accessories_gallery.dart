@@ -8,7 +8,7 @@ class AccessoriesGalleryScreen extends StatefulWidget {
   const AccessoriesGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _AccessoriesGalleryScreenState createState() =>
+  State<AccessoriesGalleryScreen> createState() =>
       _AccessoriesGalleryScreenState();
 }
 

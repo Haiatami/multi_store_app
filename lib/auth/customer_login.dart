@@ -7,7 +7,7 @@ class CustomerLogin extends StatefulWidget {
   const CustomerLogin({Key? key}) : super(key: key);
 
   @override
-  _CustomerLoginState createState() => _CustomerLoginState();
+  State<CustomerLogin> createState() => _CustomerLoginState();
 }
 
 class _CustomerLoginState extends State<CustomerLogin> {
@@ -29,8 +29,10 @@ class _CustomerLoginState extends State<CustomerLogin> {
             .signInWithEmailAndPassword(email: email, password: password);
 
         _formKey.currentState!.reset();
-
-        Navigator.pushReplacementNamed(context, '/customer_home');
+        await Future.delayed(const Duration(microseconds: 100))
+            .whenComplete(() =>
+          Navigator.pushReplacementNamed(context, '/customer_home')
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {

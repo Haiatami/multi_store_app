@@ -13,7 +13,7 @@ class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _CustomerHomeScreenState createState() => _CustomerHomeScreenState();
+  State<CustomerHomeScreen> createState() => _CustomerHomeScreenState();
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {

@@ -8,7 +8,7 @@ class WomenGalleryScreen extends StatefulWidget {
   const WomenGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _WomenGalleryScreenState createState() => _WomenGalleryScreenState();
+  State<WomenGalleryScreen> createState() => _WomenGalleryScreenState();
 }
 
 class _WomenGalleryScreenState extends State<WomenGalleryScreen> {

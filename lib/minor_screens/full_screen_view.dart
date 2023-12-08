@@ -6,7 +6,7 @@ class FullScreenView extends StatefulWidget {
   const FullScreenView({Key? key, required this.imagesList}) : super(key: key);
 
   @override
-  _FullScreenViewState createState() => _FullScreenViewState();
+  State<FullScreenView> createState() => _FullScreenViewState();
 }
 
 class _FullScreenViewState extends State<FullScreenView> {

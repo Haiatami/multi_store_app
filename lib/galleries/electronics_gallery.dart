@@ -8,7 +8,7 @@ class ElectronicsGalleryScreen extends StatefulWidget {
   const ElectronicsGalleryScreen({Key? key}) : super(key: key);
 
   @override
-  _ElectronicsGalleryScreenState createState() =>
+  State<ElectronicsGalleryScreen> createState() =>
       _ElectronicsGalleryScreenState();
 }
 

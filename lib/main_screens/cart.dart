@@ -11,7 +11,7 @@ class CartScreen extends StatefulWidget {
   const CartScreen({Key? key, this.back}) : super(key: key);
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {

@@ -14,7 +14,7 @@ class SupplierRegister extends StatefulWidget {
   const SupplierRegister({Key? key}) : super(key: key);
 
   @override
-  _SupplierRegisterState createState() => _SupplierRegisterState();
+  State<SupplierRegister> createState() => _SupplierRegisterState();
 }
 
 class _SupplierRegisterState extends State<SupplierRegister> {
@@ -103,8 +103,10 @@ class _SupplierRegisterState extends State<SupplierRegister> {
           setState(() {
             _imageFile = null;
           });
-
-          Navigator.pushReplacementNamed(context, '/supplier_login');
+          await Future.delayed(const Duration(microseconds: 100))
+              .whenComplete(() =>
+            Navigator.pushReplacementNamed(context, '/supplier_login')
+          );
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {
