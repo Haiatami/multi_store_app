@@ -1,15 +1,20 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multi_store_app/providers/cart_provider.dart';
+import 'package:multi_store_app/providers/stripe_id.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 import 'package:multi_store_app/widgets/yellow_button.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
@@ -221,7 +226,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       child: YellowButton(
                         label: 'Confirm ${totalPaid.toStringAsFixed(2)} USD',
                         width: 1,
-                        onPressed: () {
+                        onPressed: () async {
                           if (selectedValue == 1) {
                             showModalBottomSheet(
                                 context: context,
@@ -336,6 +341,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ));
                           } else if (selectedValue == 2) {
                             print('visa');
+                            await makePayment();
                           } else if (selectedValue == 3) {
                             print('paypal');
                           }
@@ -351,5 +357,57 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: CircularProgressIndicator(),
           );
         });
+  }
+
+  Map<String, dynamic>? paymentIntentData;
+
+  Future<void> makePayment() async {
+    // createPaymentIntnet
+    // initPaymentSheet
+    // displayPaymentSheet
+
+    paymentIntentData = await createPaymentIntnet();
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntentData!['client_secret'],
+            applePay: true,
+            googlePay: true,
+            testEnv: true,
+            merchantDisplayName: 'ANNIE',
+            merchantCountryCode: 'US'));
+    await displayPaymentSheet();
+  }
+
+  createPaymentIntnet() async {
+    Map<String, dynamic> body = {
+      'amount': '1200',
+      'currency': 'USD',
+      'payment_method_types[]': 'card'
+    };
+    print(body);
+    var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        body: body,
+        headers: {
+          'Authorization': 'Bearer $stripeSecretKey',
+          'content_type': "application/x-www-form-urlencoded",
+        });
+    return jsonDecode(response.body);
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance
+          .presentPaymentSheet(
+              parameters: PresentPaymentSheetParameters(
+        clientSecret: paymentIntentData!['client_secret'],
+        confirmPayment: true,
+      ))
+          .then((value) async {
+        paymentIntentData = null;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
