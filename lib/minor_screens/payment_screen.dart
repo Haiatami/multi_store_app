@@ -341,7 +341,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     ));
                           } else if (selectedValue == 2) {
                             print('visa');
-                            await makePayment();
+
+                            int payment = totalPaid.round();
+                            int pay = payment * 100;
+
+                            await makePayment(data, pay.toString());
                           } else if (selectedValue == 3) {
                             print('paypal');
                           }
@@ -361,27 +365,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Map<String, dynamic>? paymentIntentData;
 
-  Future<void> makePayment() async {
+  Future<void> makePayment(dynamic data, String total) async {
     // createPaymentIntnet
     // initPaymentSheet
     // displayPaymentSheet
-
-    paymentIntentData = await createPaymentIntnet();
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: paymentIntentData!['client_secret'],
-            applePay: true,
-            googlePay: true,
-            testEnv: true,
-            merchantDisplayName: 'ANNIE',
-            merchantCountryCode: 'US'));
-    await displayPaymentSheet();
+    try {
+      paymentIntentData = await createPaymentIntnet(total, 'USD');
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntentData!['client_secret'],
+              applePay: true,
+              googlePay: true,
+              testEnv: true,
+              merchantDisplayName: 'ANNIE',
+              merchantCountryCode: 'US'));
+      await displayPaymentSheet(data);
+    } catch (e) {
+      print('exception:$e');
+    }
   }
 
-  createPaymentIntnet() async {
+  createPaymentIntnet(String total, String currency) async {
     Map<String, dynamic> body = {
-      'amount': '1200',
-      'currency': 'USD',
+      'amount': total,
+      'currency': currency,
       'payment_method_types[]': 'card'
     };
     print(body);
@@ -395,7 +402,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return jsonDecode(response.body);
   }
 
-  displayPaymentSheet() async {
+  displayPaymentSheet(var data) async {
     try {
       await Stripe.instance
           .presentPaymentSheet(
@@ -405,6 +412,51 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ))
           .then((value) async {
         paymentIntentData = null;
+        print('paid');
+
+        showProgress();
+        for (var item in context.read<Cart>().getItems) {
+          CollectionReference orderRef =
+              FirebaseFirestore.instance.collection('orders');
+          orderId = const Uuid().v4();
+          await orderRef.doc(orderId).set({
+            'cid': data['cid'],
+            'custname': data['name'],
+            'email': data['email'],
+            'address': data['address'],
+            'phone': data['phone'],
+            'profileimage': data['profileimage'],
+            'sid': item.suppId,
+            'proid': item.documentId,
+            'orderid': orderId,
+            'ordername': item.name,
+            'orderimage': item.imagesUrl.first,
+            'orderqty': item.qty,
+            'orderprice': item.qty * item.price,
+            'deliverystatus': 'preparing',
+            'deliverydate': '',
+            'orderdate': DateTime.now(),
+            'paymentstatus': 'paid online',
+            'orderreview': false,
+          }).whenComplete(() async {
+            await FirebaseFirestore.instance
+                .runTransaction((transaction) async {
+              DocumentReference documentReference = FirebaseFirestore.instance
+                  .collection('products')
+                  .doc(item.documentId);
+              DocumentSnapshot snapshot2 =
+                  await transaction.get(documentReference);
+              transaction.update(documentReference,
+                  {'instock': snapshot2['instock'] - item.qty});
+            });
+          });
+        }
+        await Future.delayed(const Duration(microseconds: 100))
+            .whenComplete(() {
+          context.read<Cart>().clearCart();
+
+          Navigator.popUntil(context, ModalRoute.withName('/customer_home'));
+        });
       });
     } catch (e) {
       print(e.toString());
