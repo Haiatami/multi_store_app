@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
@@ -412,4 +413,9 @@ class ProDetailsHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget reviews() {
+  return ExpandablePanel(
+      collapsed: const Text('Collapsed'), expanded: const Text('expanded'));
 }
