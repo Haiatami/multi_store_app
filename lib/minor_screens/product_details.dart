@@ -3,7 +3,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
-import 'package:multi_store_app/main_screens/visit_store.dart';
+import 'package:multi_store_app/minor_screens/visit_store.dart';
 import 'package:multi_store_app/minor_screens/full_screen_view.dart';
 import 'package:multi_store_app/models/product_model.dart';
 import 'package:multi_store_app/providers/cart_provider.dart';
@@ -239,9 +239,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fontWeight: FontWeight.w600,
                               color: Colors.blueGrey.shade800),
                         ),
-                        ExpandableTheme(
-                          data: ExpandableThemeData(),
-                          child: reviews(reviewsStream),
+                        Stack(
+                          children: [
+                            Positioned(
+                              right: 50,
+                              top: 15,
+                              child: Text('Total'),
+                            ),
+                            ExpandableTheme(
+                              data: const ExpandableThemeData(
+                                iconSize: 30,
+                                iconColor: Colors.blue,
+                              ),
+                              child: reviews(reviewsStream),
+                            ),
+                          ],
                         ),
                         const ProDetailsHeader(
                           label: '  Similar Items  ',

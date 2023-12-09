@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_store_app/customer_screens/customer_orders.dart';
 import 'package:multi_store_app/customer_screens/wishlist.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
+import 'package:multi_store_app/main_screens/edit_profile.dart';
 import 'package:multi_store_app/widgets/alert_dialog.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 
@@ -273,7 +274,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           title: 'Edit Profile',
                                           subTitle: '',
                                           icon: Icons.edit,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditProfile(
+                                                          data: data,
+                                                        )));
+                                          },
                                         ),
                                         const YellowDivider(),
                                         RepeatedListTile(
