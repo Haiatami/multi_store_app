@@ -269,14 +269,23 @@ class _EditProductState extends State<EditProduct> {
                         ],
                       ),
                       ExpandablePanel(
-                        header: const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'Reviews',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                        theme: const ExpandableThemeData(hasIcon: false),
+                        header: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.all(6),
+                            child: const Center(
+                              child: Text(
+                                'Change Images & Categories',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -441,80 +450,103 @@ class _EditProductState extends State<EditProduct> {
   }
 
   Widget changeImages(Size size) {
-    return Row(
+    return Column(
       children: [
-        Container(
-          color: Colors.blueGrey.shade100,
-          height: size.width * 0.5,
-          width: size.width * 0.5,
-          child: imagesFileList != null
-              ? previewImages()
-              : const Center(
-                  child: Text('you have not \n \n picked images yet !',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16)),
-                ),
+        Row(
+          children: [
+            Container(
+              color: Colors.blueGrey.shade100,
+              height: size.width * 0.5,
+              width: size.width * 0.5,
+              child: imagesFileList != null
+                  ? previewImages()
+                  : const Center(
+                      child: Text('you have not \n \n picked images yet !',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16)),
+                    ),
+            ),
+            SizedBox(
+              height: size.width * 0.5,
+              width: size.width * 0.5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        '* select main category',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      DropdownButton(
+                          iconSize: 40,
+                          iconEnabledColor: Colors.red,
+                          dropdownColor: Colors.yellow.shade400,
+                          value: mainCategValue,
+                          items:
+                              maincateg.map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            selectedMainCateg(value);
+                          }),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        '* select subcategory',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      DropdownButton(
+                          iconSize: 40,
+                          iconEnabledColor: Colors.red,
+                          iconDisabledColor: Colors.black,
+                          dropdownColor: Colors.yellow.shade400,
+                          menuMaxHeight: 500,
+                          disabledHint: const Text('select category'),
+                          value: subCategValue,
+                          items: subCategList
+                              .map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            print(value);
+                            setState(() {
+                              subCategValue = value!;
+                            });
+                          })
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
-        SizedBox(
-          height: size.width * 0.5,
-          width: size.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  const Text(
-                    '* select main category',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  DropdownButton(
-                      iconSize: 40,
-                      iconEnabledColor: Colors.red,
-                      dropdownColor: Colors.yellow.shade400,
-                      value: mainCategValue,
-                      items: maincateg.map<DropdownMenuItem<String>>((value) {
-                        return DropdownMenuItem(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        selectedMainCateg(value);
-                      }),
-                ],
-              ),
-              Column(
-                children: [
-                  const Text(
-                    '* select subcategory',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  DropdownButton(
-                      iconSize: 40,
-                      iconEnabledColor: Colors.red,
-                      iconDisabledColor: Colors.black,
-                      dropdownColor: Colors.yellow.shade400,
-                      menuMaxHeight: 500,
-                      disabledHint: const Text('select category'),
-                      value: subCategValue,
-                      items:
-                          subCategList.map<DropdownMenuItem<String>>((value) {
-                        return DropdownMenuItem(
-                          child: Text(value),
-                          value: value,
-                        );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        print(value);
-                        setState(() {
-                          subCategValue = value!;
-                        });
-                      })
-                ],
-              ),
-            ],
-          ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: imagesFileList!.isNotEmpty
+              ? YellowButton(
+                  label: 'Reset Images',
+                  onPressed: () {
+                    setState(() {
+                      imagesFileList = [];
+                    });
+                  },
+                  width: 0.6)
+              : YellowButton(
+                  label: 'Change Images',
+                  onPressed: () {
+                    pickProductImages();
+                  },
+                  width: 0.6),
         )
       ],
     );
