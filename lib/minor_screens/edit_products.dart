@@ -111,29 +111,35 @@ class _EditProductState extends State<EditProduct> {
   }
 
   Future uploadImages() async {
-    if (imagesFileList!.isNotEmpty) {
-      if (mainCategValue != 'select category' &&
-          subCategValue != 'subcategory') {
-        try {
-          for (var image in imagesFileList!) {
-            firebase_storage.Reference ref = firebase_storage
-                .FirebaseStorage.instance
-                .ref('products/${path.basename(image.path)}');
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (imagesFileList!.isNotEmpty) {
+        if (mainCategValue != 'select category' &&
+            subCategValue != 'subcategory') {
+          try {
+            for (var image in imagesFileList!) {
+              firebase_storage.Reference ref = firebase_storage
+                  .FirebaseStorage.instance
+                  .ref('products/${path.basename(image.path)}');
 
-            await ref.putFile(File(image.path)).whenComplete(() async {
-              await ref.getDownloadURL().then((value) {
-                imagesUrlList.add(value);
+              await ref.putFile(File(image.path)).whenComplete(() async {
+                await ref.getDownloadURL().then((value) {
+                  imagesUrlList.add(value);
+                });
               });
-            });
+            }
+          } catch (e) {
+            print(e);
           }
-        } catch (e) {
-          print(e);
+        } else {
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, 'please select categories');
         }
       } else {
-        MyMessageHandler.showSnackBar(_scaffoldKey, 'please select categories');
+        imagesUrlList = widget.items['proimages'];
       }
     } else {
-      imagesUrlList = widget.items['proimages'];
+      MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
     }
   }
 
