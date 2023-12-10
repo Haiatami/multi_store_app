@@ -113,78 +113,127 @@ class _EditProductState extends State<EditProduct> {
     });
   }
 
-  Future<void> uploadImages() async {
-    if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        if (imagesFileList!.isNotEmpty) {
-          setState(() {
-            processing = true;
-          });
-          try {
-            for (var image in imagesFileList!) {
-              firebase_storage.Reference ref = firebase_storage
-                  .FirebaseStorage.instance
-                  .ref('products/${path.basename(image.path)}');
+  Future uploadImages() async {
+    if (imagesFileList!.isNotEmpty) {
+      if (mainCategValue != 'select category' &&
+          subCategValue != 'subcategory') {
+        try {
+          for (var image in imagesFileList!) {
+            firebase_storage.Reference ref = firebase_storage
+                .FirebaseStorage.instance
+                .ref('products/${path.basename(image.path)}');
 
-              await ref.putFile(File(image.path)).whenComplete(() async {
-                await ref.getDownloadURL().then((value) {
-                  imagesUrlList.add(value);
-                });
+            await ref.putFile(File(image.path)).whenComplete(() async {
+              await ref.getDownloadURL().then((value) {
+                imagesUrlList.add(value);
               });
-            }
-          } catch (e) {
-            print(e);
+            });
           }
-        } else {
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, 'please pick images first');
+        } catch (e) {
+          print(e);
         }
       } else {
-        MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
+        MyMessageHandler.showSnackBar(_scaffoldKey, 'please select categories');
       }
     } else {
-      MyMessageHandler.showSnackBar(_scaffoldKey, 'please select categories');
+      imagesUrlList = widget.items['proimages'];
     }
   }
 
-  void uploadData() async {
-    if (imagesUrlList.isNotEmpty) {
-      CollectionReference productRef =
-          FirebaseFirestore.instance.collection('products');
-
-      proId = const Uuid().v4();
-
-      await productRef.doc(proId).set({
-        'proid': proId,
-        'maincateg': mainCategValue,
-        'subcateg': subCategValue,
+  editProductData() async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.items['proid']);
+      transaction.update(documentReference, {
+        // 'maincateg': mainCategValue,
+        // 'subcateg': subCategValue,
         'price': price,
         'instock': quantity,
         'proname': proName,
         'prodesc': proDesc,
-        'sid': FirebaseAuth.instance.currentUser!.uid,
         'proimages': imagesUrlList,
         'discount': discount,
-      }).whenComplete(() {
-        setState(() {
-          processing = false;
-          imagesFileList = [];
-          mainCategValue = 'select category';
-
-          subCategList = [];
-          imagesUrlList = [];
-        });
-        _formKey.currentState!.reset();
       });
-    } else {
-      print('no images');
-    }
+    }).whenComplete(() => Navigator.pop(context));
   }
 
-  void uploadProduct() async {
-    await uploadImages().whenComplete(() => uploadData());
+  saveChanges() async {
+    await uploadImages().whenComplete(() => editProductData());
   }
+
+  // Future<void> uploadImages() async {
+  //   if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
+  //     if (_formKey.currentState!.validate()) {
+  //       _formKey.currentState!.save();
+  //       if (imagesFileList!.isNotEmpty) {
+  //         setState(() {
+  //           processing = true;
+  //         });
+  //         try {
+  //           for (var image in imagesFileList!) {
+  //             firebase_storage.Reference ref = firebase_storage
+  //                 .FirebaseStorage.instance
+  //                 .ref('products/${path.basename(image.path)}');
+
+  //             await ref.putFile(File(image.path)).whenComplete(() async {
+  //               await ref.getDownloadURL().then((value) {
+  //                 imagesUrlList.add(value);
+  //               });
+  //             });
+  //           }
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       } else {
+  //         MyMessageHandler.showSnackBar(
+  //             _scaffoldKey, 'please pick images first');
+  //       }
+  //     } else {
+  //       MyMessageHandler.showSnackBar(_scaffoldKey, 'please fill all fields');
+  //     }
+  //   } else {
+  //     MyMessageHandler.showSnackBar(_scaffoldKey, 'please select categories');
+  //   }
+  // }
+
+  // void uploadData() async {
+  //   if (imagesUrlList.isNotEmpty) {
+  //     CollectionReference productRef =
+  //         FirebaseFirestore.instance.collection('products');
+
+  //     proId = const Uuid().v4();
+
+  //     await productRef.doc(proId).set({
+  //       'proid': proId,
+  //       'maincateg': mainCategValue,
+  //       'subcateg': subCategValue,
+  //       'price': price,
+  //       'instock': quantity,
+  //       'proname': proName,
+  //       'prodesc': proDesc,
+  //       'sid': FirebaseAuth.instance.currentUser!.uid,
+  //       'proimages': imagesUrlList,
+  //       'discount': discount,
+  //     }).whenComplete(() {
+  //       setState(() {
+  //         processing = false;
+  //         imagesFileList = [];
+  //         mainCategValue = 'select category';
+
+  //         subCategList = [];
+  //         imagesUrlList = [];
+  //       });
+  //       _formKey.currentState!.reset();
+  //     });
+  //   } else {
+  //     print('no images');
+  //   }
+  // }
+
+  // void uploadProduct() async {
+  //   await uploadImages().whenComplete(() => uploadData());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -308,6 +357,8 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.38,
                           child: TextFormField(
+                              initialValue:
+                                  widget.items['price'].toStringAsFixed(2),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'please enter price';
@@ -333,6 +384,7 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.38,
                           child: TextFormField(
+                              initialValue: widget.items['discount'].toString(),
                               maxLength: 2,
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -361,6 +413,7 @@ class _EditProductState extends State<EditProduct> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextFormField(
+                          initialValue: widget.items['instock'].toString(),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'please enter Quantity';
@@ -384,6 +437,7 @@ class _EditProductState extends State<EditProduct> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
+                          initialValue: widget.items['proname'],
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'please enter product name';
@@ -406,6 +460,7 @@ class _EditProductState extends State<EditProduct> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
+                          initialValue: widget.items['prodesc'],
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'please enter product description';
@@ -435,7 +490,7 @@ class _EditProductState extends State<EditProduct> {
                       YellowButton(
                           label: 'Save changes',
                           onPressed: () {
-                            Navigator.pop(context);
+                            saveChanges();
                           },
                           width: 0.5)
                     ],
