@@ -24,9 +24,10 @@ class BeautyCategory extends StatelessWidget {
                     headerLabel: 'Beauty',
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.67,
                     child: GridView.count(
                       mainAxisSpacing: 70,
+                      crossAxisSpacing: 15,
                       crossAxisCount: 2,
                       children: List.generate(beauty.length - 1, (index) {
                         return SubcategModel(

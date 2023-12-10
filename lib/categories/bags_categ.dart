@@ -24,11 +24,11 @@ class BagsCategory extends StatelessWidget {
                     headerLabel: 'Bags',
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.67,
                     child: GridView.count(
                       mainAxisSpacing: 70,
                       crossAxisSpacing: 15,
-                      crossAxisCount: 3,
+                      crossAxisCount: 2,
                       children: List.generate(bags.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'bags',

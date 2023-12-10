@@ -24,11 +24,11 @@ class AccessoriesCategory extends StatelessWidget {
                     headerLabel: 'Accessories',
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.68,
+                    height: MediaQuery.of(context).size.height * 0.67,
                     child: GridView.count(
                       mainAxisSpacing: 70,
                       crossAxisSpacing: 15,
-                      crossAxisCount: 3,
+                      crossAxisCount: 2,
                       children: List.generate(accessories.length - 1, (index) {
                         return SubcategModel(
                           mainCategName: 'accessories',

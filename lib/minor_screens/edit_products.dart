@@ -7,6 +7,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_store_app/utilities/categ_list.dart';
+import 'package:multi_store_app/widgets/pink_button.dart';
 import 'package:multi_store_app/widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:multi_store_app/widgets/yellow_button.dart';
@@ -39,7 +40,7 @@ class _EditProductState extends State<EditProduct> {
   final ImagePicker _picker = ImagePicker();
 
   List<XFile>? imagesFileList = [];
-  List<String> imagesUrlList = [];
+  List<dynamic> imagesUrlList = [];
   dynamic _pickedImageError;
 
   void pickProductImages() async {
@@ -149,8 +150,8 @@ class _EditProductState extends State<EditProduct> {
           .collection('products')
           .doc(widget.items['proid']);
       transaction.update(documentReference, {
-        // 'maincateg': mainCategValue,
-        // 'subcateg': subCategValue,
+        'maincateg': mainCategValue,
+        'subcateg': subCategValue,
         'price': price,
         'instock': quantity,
         'proname': proName,
@@ -164,7 +165,6 @@ class _EditProductState extends State<EditProduct> {
   saveChanges() async {
     await uploadImages().whenComplete(() => editProductData());
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -428,12 +428,19 @@ class _EditProductState extends State<EditProduct> {
                               width: 0.5)
                         ],
                       ),
-                      YellowButton(
-                              label: 'Cancel',
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              width: 0.25),
+                      PinkButton(
+                          label: 'Delete Item',
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .runTransaction((transaction) async {
+                              DocumentReference documentReference =
+                                  FirebaseFirestore.instance
+                                      .collection('products')
+                                      .doc(widget.items['proid']);
+                              transaction.delete(documentReference);
+                            }).whenComplete(() => Navigator.pop(context));
+                          },
+                          width: 0.7),
                     ],
                   ),
                 ],
