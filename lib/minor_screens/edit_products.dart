@@ -409,21 +409,31 @@ class _EditProductState extends State<EditProduct> {
                           )),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          YellowButton(
+                              label: 'Cancel',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              width: 0.25),
+                          YellowButton(
+                              label: 'Save changes',
+                              onPressed: () {
+                                saveChanges();
+                              },
+                              width: 0.5)
+                        ],
+                      ),
                       YellowButton(
-                          label: 'Cancel',
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          width: 0.25),
-                      YellowButton(
-                          label: 'Save changes',
-                          onPressed: () {
-                            saveChanges();
-                          },
-                          width: 0.5)
+                              label: 'Cancel',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              width: 0.25),
                     ],
                   ),
                 ],
