@@ -97,6 +97,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
             'profileimage': profileImage,
             'phone': '',
             'address': '',
+            "status": "approved",
             'cid': _uid
           });
           _formKey.currentState!.reset();
